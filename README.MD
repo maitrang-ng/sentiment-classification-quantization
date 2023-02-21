@@ -109,7 +109,7 @@ test Acc: 0.9482
 ONNX cpu Inference time = 286.9295 ms
 ```
 
-## VII. Notebook
+## VII. Notebook & models file
 Training notebook with HF dataset:
 https://colab.research.google.com/drive/1Bxx0w8EHoVo84yJ6I3VqfdED9-YpRtde
 
@@ -118,5 +118,8 @@ https://colab.research.google.com/drive/1PjCCokQnnXdYVKoXD2qcSezBQQmAwqMW#scroll
 
 Quantization notebook:
 https://colab.research.google.com/drive/1wtAaF8oQhw5vuAjgFtpJjob-kX-STOif#scrollTo=8J6HAKSiE7IK
+
+Models file to download:
+https://drive.google.com/drive/folders/1hlVSm434UgpwwzROfYKillIxwMc8lWYt?usp=sharing
 
 
