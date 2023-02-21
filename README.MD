@@ -9,7 +9,6 @@ Project: Fine-tune & quantize Distilbert for IMDB reviews classification.
 Docker, Flask, ONNX, ONNXRuntime, Transformers, python 3.9
 
 
-
 Authors:
 - Github: maitrang-ng, NamTran072, quangle, mp1704
 - Email: maitrang2406@gmail.com, lenhatquang1991@gmail.com, tranhainam072@gmail.com, pmphuong1704@gmail.com
@@ -18,103 +17,101 @@ Advisors:
 - Github: bangoc123, 
 - Email: ngoc@protonx.io
 
-## I.  Set up environment
+## I.  Set up environment locally
 - Step 1: 
-
-```
 Python 3.9 & pipenv are required
-```
 
 - Step 2: 
-```
-cd into sentiment-classification then use command line pipenv install -r requirements.txt to set up env
-pipenv check to check env status
-pipenv shell to active env
-```
+```cd``` into sentiment-classification then use command line ```pipenv install -r requirements.txt``` to set up env
+```pipenv check``` to check env status
+```pipenv shell``` to active env
 
 - Step 3: 
+```cd src ```in command line
+
+
+## II. Set up docker
 
 ```
-cd src in command line
+docker build -t sentiment-classification .
+docker run -dp 5001:80 sentiment-classification
+```
 
-``` 
-
-## II.  Set up your dataset
+## III. Set up your dataset
 
 - Datasets must be in format CSV. You can check dataset folder to more details.
-- References: [NLP](https://github.com/bangoc123/transformer) and [CV](https://github.com/bangoc123/mlp-mixer)
 
-## III. Training Process
+## IV. Training Process
 
 Training script:
-
-```python
-
-python3 trainer.py -s ${save-model-dir}
-
 ```
+python3 trainer.py -ds ${dataset-path} -r ${ratio-split-dataset} -m ${base-model} -b ${batcg-size}
+ -e ${epoches} -lr ${learning-rate} -wd ${weight-decay} -o ${output-path} -s ${save-model-dir}
+```
+Example: you can ignore all arguments then command will use the default setting
+```
+python3 trainer.py -s ../models/DistilBert
+``` 
 
-Example:
-
-```python
-
-python3 train.py -s '../models/DistilBert'
-
+dataset-path can accept 1 or more files path, then split dataset with the ratio as you choose.
+If you provide 2 or 3 files path and do not provide split ratio, the files will be considered in order: train, test or train, valid, test.
+For 1 or more than 3 files path, split ration is required.
+Split ratio can accept 1 or 2 values. One value: test-dataset ratio. Two ratios in order: test-dataset ration, validation-dataset ratio.
+Example: 
+```
+python3 trainer.py -ds ../dataset/train.csv -r 0.2 0.2 -s ../models/DistilBert
 ``` 
 
 There are some important arguments for the script you should consider when running it:
+- `-s`: the directory to save model
 
-- `train-folder`: The folder of training data
-- `valid-folder`: The folder of validation data
-- ...
-
-## IV. Predict Process
-
-```bash
-python predict.py --test-data ${link_to_test_data}
+## V. Predict Process
+Predict with torch model:
 ```
-
-## V. Result and Comparision
-
-**FIXME**
-
-Your implementation
+python3 predictor.py torch -m ${torch-model-path}
 ```
-Epoch 7/10
-782/782 [==============================] - 261s 334ms/step - loss: 0.8315 - acc: 0.8565 - val_loss: 0.8357 - val_acc: 0.7978
-Epoch 8/10
-782/782 [==============================] - 261s 334ms/step - loss: 0.3182 - acc: 0.8930 - val_loss: 0.6161 - val_acc: 0.8047
-Epoch 9/10
-782/782 [==============================] - 261s 333ms/step - loss: 1.1965 - acc: 0.8946 - val_loss: 3.9842 - val_acc: 0.7855
-Epoch 10/10
-782/782 [==============================] - 261s 333ms/step - loss: 0.4717 - acc: 0.8878 - val_loss: 0.4894 - val_acc: 0.8262
-
+Example:
 ```
+python3 predictor.py -m ../models/DistilBert
+``` 
 
-**FIXME**
+Predict with onnx model:
+```
+python3 predictor.py onnx -m ${onnx-model-path} -t ${tokenizer-path}
+```
+Example:
+```
+python3 predictor.py -m ../models/ONNX/distilbert_full_precision.onnx -t ../models/ONNX
+``` 
 
-Other architecture
+
+## VI. Evaluation
+Run locally on 1000 examples of test dataset
+
+Evaluation torch model
 
 ```
-Epoch 6/10
-391/391 [==============================] - 115s 292ms/step - loss: 0.1999 - acc: 0.9277 - val_loss: 0.4719 - val_acc: 0.8130
-Epoch 7/10
-391/391 [==============================] - 114s 291ms/step - loss: 0.1526 - acc: 0.9494 - val_loss: 0.5224 - val_acc: 0.8318
-Epoch 8/10
-391/391 [==============================] - 115s 293ms/step - loss: 0.1441 - acc: 0.9513 - val_loss: 0.5811 - val_acc: 0.7875
+python3 evaluation.py torch
+
+```
+Result:
+```
+test Acc: 0.9355
+PyTorch cpu Inference time = 323.8157 ms
 ```
 
-Your comments about these results <--- **FIXME**
 
+Evaluation ONNX model
 
-## VI. Running Test
-
-When you want to modify the model, you need to run the test to make sure your change does not affect the whole system.
-
-In the `./folder-name` **(FIXME)** folder please run:
-
-```bash
-pytest
 ```
+python3 evaluation.py onnx
+```
+Result:
+```
+test Acc: 0.9482
+ONNX cpu Inference time = 286.9295 ms
+```
+
+
 
 
