@@ -89,10 +89,8 @@ python3 predictor.py -m ../models/ONNX/distilbert_full_precision.onnx -t ../mode
 Run locally on 1000 examples of test dataset
 
 Evaluation torch model
-
 ```
 python3 evaluation.py torch
-
 ```
 Result:
 ```
@@ -102,7 +100,6 @@ PyTorch cpu Inference time = 323.8157 ms
 
 
 Evaluation ONNX model
-
 ```
 python3 evaluation.py onnx
 ```
@@ -112,6 +109,14 @@ test Acc: 0.9482
 ONNX cpu Inference time = 286.9295 ms
 ```
 
+## VII. Notebook
+Training notebook with HF dataset:
+https://colab.research.google.com/drive/1Bxx0w8EHoVo84yJ6I3VqfdED9-YpRtde
 
+Training notebook with TF dataset:
+https://colab.research.google.com/drive/1PjCCokQnnXdYVKoXD2qcSezBQQmAwqMW#scrollTo=KW8CH-HBCuzN
+
+Quantization notebook:
+https://colab.research.google.com/drive/1wtAaF8oQhw5vuAjgFtpJjob-kX-STOif#scrollTo=8J6HAKSiE7IK
 
 
